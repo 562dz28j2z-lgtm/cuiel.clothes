@@ -57,7 +57,7 @@
     .btn-order{display:inline-block;padding:.55rem 1.2rem;background:var(--camel);color:var(--dark);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;font-family:'Cinzel',serif;border:none;cursor:pointer;transition:background .3s}
     .btn-order:hover{background:var(--camel-lt)}
     .product-badge{position:absolute;top:1.2rem;left:1.2rem;background:var(--camel);color:white;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;padding:.3rem .8rem}
-    .modal-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(43,33,24,.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem}
+    .modal-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(43,33,24,.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem;opacity:1!important;transform:none!important}
     .modal-overlay.open{display:flex}
     .modal{background:var(--bg);max-width:560px;width:100%;max-height:90vh;overflow-y:auto;padding:3rem;position:relative;border:1px solid var(--border);animation:fadeUp .4s ease}
     .modal-close{position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;font-size:1.4rem;color:var(--muted);cursor:pointer}
@@ -356,20 +356,7 @@
     const price = document.getElementById('modalPrice').textContent;
     if (!name||!phone||!wilaya||!commune||!size||!height||!delivery) { alert('Veuillez remplir tous les champs.'); return; }
     const deliveryLabel = delivery === 'domicile' ? 'Domicile' : 'Bureau (World Express)';
-    const msg = encodeURIComponent('NOUVELLE COMMANDE - Cuiel Clothes
-
-Article : ' + currentProduct + '
-Prix : ' + price + '
-
-Nom : ' + name + '
-Telephone : ' + phone + '
-Wilaya : ' + wilaya + '
-Commune : ' + commune + '
-Taille : ' + size + '
-Hauteur : ' + height + '
-Livraison : ' + deliveryLabel + '
-
-Paiement a la livraison');
+    const msg = encodeURIComponent('NOUVELLE COMMANDE - Cuiel Clothes\n\nArticle : ' + currentProduct + '\nPrix : ' + price + '\n\nNom : ' + name + '\nTelephone : ' + phone + '\nWilaya : ' + wilaya + '\nCommune : ' + commune + '\nTaille : ' + size + '\nHauteur : ' + height + '\nLivraison : ' + deliveryLabel + '\n\nPaiement a la livraison');
     window.open('https://wa.me/213556977134?text=' + msg, '_blank');
     document.getElementById('orderForm').style.display = 'none';
     document.getElementById('successScreen').classList.add('show');
@@ -377,9 +364,12 @@ Paiement a la livraison');
   document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
   const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; } }); }, { threshold: 0.08 });
   document.querySelectorAll('.product-card,.price-row,.livraison-card,.about-content,.contact-inner,.about-visual').forEach((el,i) => { el.style.opacity='0'; el.style.transform='translateY(22px)'; el.style.transition='opacity .7s '+i*.04+'s ease,transform .7s '+i*.04+'s ease'; observer.observe(el); });
-  // Fix: ensure modal is always visible when open, regardless of observer
-  document.getElementById('modalOverlay').style.opacity = '1';
-  document.getElementById('modalOverlay').style.transform = 'none';
+  // Fix modal always visible
+  var mo = document.getElementById('modalOverlay');
+  mo.style.removeProperty('opacity');
+  mo.style.removeProperty('transform');
+  mo.style.setProperty('opacity','1','important');
+  mo.style.setProperty('transform','none','important');
 </script>
 </body>
 </html>
